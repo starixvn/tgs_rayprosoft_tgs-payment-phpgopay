@@ -10,7 +10,18 @@
     <Authors>Raypro</Authors>
     <Version>0.0.1</Version>
     <Title>Tgs.Payment.PhpGoPay.Client</Title>
+    <PackageProjectUrl>https://gitlab.com/rayprosoft/tgs-payment-phpgopay</PackageProjectUrl>
+    <RepositoryUrl>https://gitlab.com/rayprosoft/tgs-payment-phpgopay.git</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>Tgs Payment PhpGo</PackageTags>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.5.22">
