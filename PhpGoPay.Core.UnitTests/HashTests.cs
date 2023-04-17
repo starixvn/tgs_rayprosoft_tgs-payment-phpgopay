@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging.Abstractions;
+using Tgs.Payment.PhpGoPay;
 
 namespace PhpGoPay.Core.UnitTests;
 

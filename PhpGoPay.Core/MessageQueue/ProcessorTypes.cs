@@ -1,4 +1,6 @@
-﻿namespace PhpGoPay.Core.MessageQueue;
+﻿using Tgs.Payment.PhpGoPay.MessageQueue;
+
+namespace Tgs.Payment.PhpGoPay.MessageQueue;
 
 public static class ProcessorTypes
 {

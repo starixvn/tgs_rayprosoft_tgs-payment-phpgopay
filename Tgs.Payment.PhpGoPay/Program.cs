@@ -4,8 +4,8 @@ using OpenTelemetry.Instrumentation.AspNetCore;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using PhpGoPay.Core;
-using PhpGoPay.Core.MessageQueue;
+using Tgs.Payment.PhpGoPay;
+using Tgs.Payment.PhpGoPay.MessageQueue;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,4 +1,4 @@
-﻿namespace PhpGoPay.Core;
+﻿namespace Tgs.Payment.PhpGoPay;
 
 public class ApiFailException : Exception
 {

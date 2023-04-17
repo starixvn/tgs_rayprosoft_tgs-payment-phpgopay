@@ -2,8 +2,9 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Microsoft.Extensions.Logging;
+using Tgs.Payment.PhpGoPay;
 
-namespace PhpGoPay.Core;
+namespace Tgs.Payment.PhpGoPay;
 
 internal class PhpGoClient
 {

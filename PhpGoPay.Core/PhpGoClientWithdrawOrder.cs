@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace PhpGoPay.Core;
+namespace Tgs.Payment.PhpGoPay;
 public record PhpGoClientWithdrawOrder(
 	[property: JsonPropertyName("total_amount")] decimal Amount,
 	[property: JsonPropertyName("order_id")] Guid FormId,

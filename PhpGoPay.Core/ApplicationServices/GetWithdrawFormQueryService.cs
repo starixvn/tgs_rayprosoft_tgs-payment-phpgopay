@@ -2,8 +2,10 @@
 using Tgs.Payment.Clients;
 using Tgs.Payment.PhpGoPay.Client;
 using Tgs.ServiceUtility;
+using Tgs.Payment.PhpGoPay;
+using Tgs.Payment.PhpGoPay.ApplicationServices;
 
-namespace PhpGoPay.Core.ApplicationServices;
+namespace Tgs.Payment.PhpGoPay.ApplicationServices;
 
 internal class GetWithdrawFormQueryService : IGetService<GetWithdrawFormQuery, WithdrawForm?>
 {

@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <SqlQueryToolsConnectionString />
+    <RootNamespace>Tgs.Payment.PhpGoPay</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

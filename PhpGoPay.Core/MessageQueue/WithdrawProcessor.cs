@@ -5,8 +5,9 @@ using Tgs.MessageQueue;
 using Tgs.Payment.Clients;
 using Tgs.Payment.PhpGoPay.Client;
 using Tgs.Payment.Protos;
+using Tgs.Payment.PhpGoPay;
 
-namespace PhpGoPay.Core.MessageQueue;
+namespace Tgs.Payment.PhpGoPay.MessageQueue;
 
 internal class WithdrawProcessor : IMessageProcessor
 {

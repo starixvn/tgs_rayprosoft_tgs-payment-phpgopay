@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Tgs.Payment.PhpGoPay.Client;
 
-namespace PhpGoPay.Core;
+namespace Tgs.Payment.PhpGoPay;
 internal record PhpGoClientDepositOrder(
 	[property: JsonPropertyName("payment_type")] PhpGoPaymentType PaymentType,
 	decimal Amount,

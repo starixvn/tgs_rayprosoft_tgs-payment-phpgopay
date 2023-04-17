@@ -1,11 +1,11 @@
 ﻿using System.Net.Mime;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
-using PhpGoPay.Core;
-using PhpGoPay.Core.ApplicationServices;
 using Tgs.Payment.Clients;
 using Tgs.Payment.PhpGoPay.Client;
 using Tgs.ServiceUtility;
+using Tgs.Payment.PhpGoPay;
+using Tgs.Payment.PhpGoPay.ApplicationServices;
 
 namespace Tgs.Payment.PhpGoPay.Controllers;
 

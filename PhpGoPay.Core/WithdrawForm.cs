@@ -1,7 +1,7 @@
 ﻿using Tgs.Payment.Clients;
 using Tgs.Payment.PhpGoPay.Client;
 
-namespace PhpGoPay.Core;
+namespace Tgs.Payment.PhpGoPay;
 public record WithdrawForm(
 	Guid Id,
 	string? UserId,

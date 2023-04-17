@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using PhpGoPay.Core;
+using Tgs.Payment.PhpGoPay;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

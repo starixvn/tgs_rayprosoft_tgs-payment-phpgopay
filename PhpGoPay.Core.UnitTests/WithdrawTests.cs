@@ -1,6 +1,6 @@
 ﻿using NSubstitute;
-using PhpGoPay.Core.ApplicationServices;
 using Tgs.Payment.Clients;
+using Tgs.Payment.PhpGoPay.ApplicationServices;
 
 namespace PhpGoPay.Core.UnitTests;
 

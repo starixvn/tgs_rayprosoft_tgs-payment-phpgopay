@@ -2,8 +2,9 @@
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Logging;
+using Tgs.Payment.PhpGoPay;
 
-namespace PhpGoPay.Core;
+namespace Tgs.Payment.PhpGoPay;
 
 public class PhpGoHasher
 {

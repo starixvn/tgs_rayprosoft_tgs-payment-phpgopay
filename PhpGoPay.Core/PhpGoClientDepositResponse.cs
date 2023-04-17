@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace PhpGoPay.Core;
+namespace Tgs.Payment.PhpGoPay;
 public record PhpGoClientDepositResponse(
 	decimal Amount,
 	string? Remark,
