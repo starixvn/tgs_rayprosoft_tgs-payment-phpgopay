@@ -63,7 +63,7 @@ internal class PhpGoClient
 					_logger.LogInformation("Deposit Body: {bodyJson}", bodyJson);
 				}
 
-				if (node["status"]?.GetValue<string>() != "1")
+				if (node["status"]?.ToString() != "1")
 					throw new ApiFailException(node["message"]?.GetValue<string>());
 			})
 			.Select(node => node!.Deserialize<PhpGoClientDepositResponse>(_jsonSerializerOptions)!)
@@ -115,7 +115,7 @@ internal class PhpGoClient
 					_logger.LogInformation("Deposit Body: {bodyJson}", bodyJson);
 				}
 
-				if (node["status"]?.GetValue<string>() != "1")
+				if (node["status"]?.ToString() != "1")
 					throw new ApiFailException(node["message"]?.GetValue<string>());
 			})
 			.FirstAsync(cancellationToken)
