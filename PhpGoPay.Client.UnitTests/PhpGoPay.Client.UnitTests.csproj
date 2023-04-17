@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="JunitXml.TestLogger" Version="3.0.124" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageReference Include="PhoenixToolkits.CodeAnalysis.Analyzers" Version="0.0.8">
       <PrivateAssets>all</PrivateAssets>
