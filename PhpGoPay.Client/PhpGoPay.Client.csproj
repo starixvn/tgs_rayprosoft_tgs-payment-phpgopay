@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Tgs.Payment.PhpGoPay.Client</RootNamespace>
+    <SqlQueryToolsConnectionString />
+    <PackageId>Tgs.Payment.PhpGoPay.Client</PackageId>
+    <Authors>Raypro</Authors>
+    <Version>0.0.1</Version>
+    <Title>Tgs.Payment.PhpGoPay.Client</Title>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.5.22">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

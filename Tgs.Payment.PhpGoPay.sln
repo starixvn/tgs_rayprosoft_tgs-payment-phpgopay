@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.Payment.PhpGoPay", "Tgs.Payment.PhpGoPay\Tgs.Payment.PhpGoPay.csproj", "{EF2D1599-BB5E-4BA3-805D-74C7C29C418A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "方案項目", "方案項目", "{94ED447C-D4AD-4E4F-B524-E3ABCDD21E5D}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		nuget.config = nuget.config
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhpGoPay.Core", "PhpGoPay.Core\PhpGoPay.Core.csproj", "{C984D8B1-1331-460C-ACB2-1098A31D67CB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhpGoPay.Core.UnitTests", "PhpGoPay.Core.UnitTests\PhpGoPay.Core.UnitTests.csproj", "{BAE5C835-F364-461B-9B11-8234F20480DE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhpGoTest", "PhpGoTest\PhpGoTest.csproj", "{7504C434-EC76-48E6-A380-8244E766066D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhpGoPay.Client", "PhpGoPay.Client\PhpGoPay.Client.csproj", "{7DC299AB-ABE0-4479-9ADD-A6D38DD89508}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhpGoPay.Client.UnitTests", "PhpGoPay.Client.UnitTests\PhpGoPay.Client.UnitTests.csproj", "{A845DA30-413E-4787-B75E-2D675775DFF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tgs.Payment.PhpGoPay.IntegrationTests", "Tgs.Payment.PhpGoPay.IntegrationTests\Tgs.Payment.PhpGoPay.IntegrationTests.csproj", "{6A86956C-6D23-49E8-B511-CC795C10B92D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF2D1599-BB5E-4BA3-805D-74C7C29C418A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF2D1599-BB5E-4BA3-805D-74C7C29C418A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF2D1599-BB5E-4BA3-805D-74C7C29C418A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF2D1599-BB5E-4BA3-805D-74C7C29C418A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C984D8B1-1331-460C-ACB2-1098A31D67CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C984D8B1-1331-460C-ACB2-1098A31D67CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C984D8B1-1331-460C-ACB2-1098A31D67CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C984D8B1-1331-460C-ACB2-1098A31D67CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAE5C835-F364-461B-9B11-8234F20480DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAE5C835-F364-461B-9B11-8234F20480DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAE5C835-F364-461B-9B11-8234F20480DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAE5C835-F364-461B-9B11-8234F20480DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7504C434-EC76-48E6-A380-8244E766066D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7504C434-EC76-48E6-A380-8244E766066D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7504C434-EC76-48E6-A380-8244E766066D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7504C434-EC76-48E6-A380-8244E766066D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DC299AB-ABE0-4479-9ADD-A6D38DD89508}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DC299AB-ABE0-4479-9ADD-A6D38DD89508}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DC299AB-ABE0-4479-9ADD-A6D38DD89508}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DC299AB-ABE0-4479-9ADD-A6D38DD89508}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A845DA30-413E-4787-B75E-2D675775DFF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A845DA30-413E-4787-B75E-2D675775DFF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A845DA30-413E-4787-B75E-2D675775DFF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A845DA30-413E-4787-B75E-2D675775DFF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A86956C-6D23-49E8-B511-CC795C10B92D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A86956C-6D23-49E8-B511-CC795C10B92D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A86956C-6D23-49E8-B511-CC795C10B92D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A86956C-6D23-49E8-B511-CC795C10B92D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {61501E2A-8DEB-42AB-849E-BDBAC3E274A3}
+	EndGlobalSection
+EndGlobal

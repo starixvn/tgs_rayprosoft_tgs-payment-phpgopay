@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: phpgopay-local
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5154
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: phpgopay-local
+subsets:
+  - addresses:
+      - ip: 192.168.50.147
+    ports:
+      - port: 5154

@@ -1,0 +1,26 @@
+﻿{
+	"profiles": {
+		"http": {
+			"commandName": "Project",
+			"dotnetRunMessages": true,
+			"launchBrowser": true,
+			"applicationUrl": "http://localhost:5154",
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "Development",
+				"OTEL_SERVICE_NAME": "Payment-PhpGoPay(local)",
+				"NODE_IP": "otel.rpgp.cc"
+			}
+		},
+		"https": {
+			"commandName": "Project",
+			"dotnetRunMessages": true,
+			"launchBrowser": true,
+			"applicationUrl": "https://localhost:7095;http://+:5154",
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "Development",
+				"OTEL_SERVICE_NAME": "Payment-PhpGoPay(local)",
+				"NODE_IP": "otel.rpgp.cc"
+			}
+		}
+	}
+}
