@@ -8,7 +8,7 @@
     <SqlQueryToolsConnectionString />
     <PackageId>Tgs.Payment.PhpGoPay.Client</PackageId>
     <Authors>Raypro</Authors>
-    <Version>0.0.1</Version>
+    <Version>0.0.3</Version>
     <Title>Tgs.Payment.PhpGoPay.Client</Title>
     <PackageProjectUrl>https://gitlab.com/rayprosoft/tgs-payment-phpgopay</PackageProjectUrl>
     <RepositoryUrl>https://gitlab.com/rayprosoft/tgs-payment-phpgopay.git</RepositoryUrl>
