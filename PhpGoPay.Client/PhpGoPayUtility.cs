@@ -11,8 +11,7 @@ public static class PhpGoPayUtility
 		DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
 		Converters = {
 			new PhpGoPaymentTypeConverter(),
-			new PhpGoBankCodeConverter(),
-			new PhpGoPayWithdrawSettingsConverter()
+			new PhpGoBankCodeConverter()
 		}
 	};
 }
