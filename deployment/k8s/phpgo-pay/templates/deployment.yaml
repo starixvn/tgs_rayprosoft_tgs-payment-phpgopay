@@ -75,7 +75,7 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
         - name: monitor
-          image: otel/opentelemetry-collector:0.62.1
+          image: otel/opentelemetry-collector:0.75.0
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - --config=/etc/otel/config.yaml
