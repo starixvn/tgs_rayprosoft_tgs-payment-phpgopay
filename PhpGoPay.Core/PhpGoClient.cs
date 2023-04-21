@@ -85,6 +85,7 @@ internal class PhpGoClient
 			["bank_card_remark"] = order.BankCode switch
 			{
 				"gcash" => order.AccountOrPhone,
+				"PMP" => order.AccountOrPhone,
 				_ => "no"
 			}
 		};
