@@ -29,7 +29,7 @@ push-nuget:
     - push_package 'PhpGoPay.Client'
   artifacts:
     paths:
-      - WandaPay.Client/bin/$BuildConfiguration/*.nupkg
+      - PhpGoPay.Client/bin/$BuildConfiguration/*.nupkg
 
 push-docker-image:
   extends: .push-docker-image-template
