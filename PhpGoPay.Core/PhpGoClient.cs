@@ -144,6 +144,8 @@ internal class PhpGoClient
 
 		var sign = _phpGoHasher.ComputeHash(key, requestData);
 
+		requestData["sign"] = sign;
+
 		return await _httpClient.PostAsJsonAsync(
 			"/api/query",
 			requestData,
