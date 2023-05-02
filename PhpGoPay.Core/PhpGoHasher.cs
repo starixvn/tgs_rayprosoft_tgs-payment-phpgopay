@@ -2,7 +2,6 @@
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Logging;
-using Tgs.Payment.PhpGoPay;
 
 namespace Tgs.Payment.PhpGoPay;
 

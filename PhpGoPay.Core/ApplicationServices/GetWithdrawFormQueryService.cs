@@ -2,8 +2,6 @@
 using Tgs.Payment.Clients;
 using Tgs.Payment.PhpGoPay.Client;
 using Tgs.ServiceUtility;
-using Tgs.Payment.PhpGoPay;
-using Tgs.Payment.PhpGoPay.ApplicationServices;
 
 namespace Tgs.Payment.PhpGoPay.ApplicationServices;
 

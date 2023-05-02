@@ -5,7 +5,6 @@ using Tgs.MessageQueue;
 using Tgs.Payment.Clients;
 using Tgs.Payment.PhpGoPay.Client;
 using Tgs.Payment.Protos;
-using Tgs.Payment.PhpGoPay;
 
 namespace Tgs.Payment.PhpGoPay.MessageQueue;
 

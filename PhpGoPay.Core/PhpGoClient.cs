@@ -2,7 +2,6 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Microsoft.Extensions.Logging;
-using Tgs.Payment.PhpGoPay;
 
 namespace Tgs.Payment.PhpGoPay;
 
@@ -25,7 +24,11 @@ internal class PhpGoClient
 		_logger = logger ?? throw new ArgumentNullException(nameof(logger));
 	}
 
-	public async Task<PhpGoClientDepositResponse> DepositAsync(string merchant, string key, PhpGoClientDepositOrder order, CancellationToken cancellationToken = default)
+	public async Task<PhpGoClientDepositResponse> DepositAsync(
+		string merchant,
+		string key,
+		PhpGoClientDepositOrder order,
+		CancellationToken cancellationToken = default)
 	{
 		var requestData = new Dictionary<string, string?>
 		{
@@ -71,7 +74,11 @@ internal class PhpGoClient
 			.ConfigureAwait(false);
 	}
 
-	public async ValueTask WithdrawAsync(string merchant, string key, PhpGoClientWithdrawOrder order, CancellationToken cancellationToken = default)
+	public async ValueTask WithdrawAsync(
+		string merchant,
+		string key,
+		PhpGoClientWithdrawOrder order,
+		CancellationToken cancellationToken = default)
 	{
 		var requestData = new Dictionary<string, string?>
 		{
@@ -119,6 +126,35 @@ internal class PhpGoClient
 				if (node["status"]?.ToString() != "1")
 					throw new ApiFailException(node["message"]?.GetValue<string>());
 			})
+			.FirstAsync(cancellationToken)
+			.ConfigureAwait(false);
+	}
+
+	public async ValueTask<PhpGoClientQueryResponse> QueryDepositOrWithdrawFormStatusAsync(
+		string merchant,
+		string key,
+		Guid formId,
+		CancellationToken cancellationToken = default)
+	{
+		var requestData = new Dictionary<string, string?>
+		{
+			["merchant"] = merchant,
+			["order_id"] = formId.ToString(),
+		};
+
+		var sign = _phpGoHasher.ComputeHash(key, requestData);
+
+		return await _httpClient.PostAsJsonAsync(
+			"/api/query",
+			requestData,
+			_jsonSerializerOptions,
+			cancellationToken)
+			.ToAsyncEnumerable()
+			.Do(response => response.EnsureSuccessStatusCode())
+			.SelectMany(response => response.Content
+				.ReadFromJsonAsync<PhpGoClientQueryResponse>(_jsonSerializerOptions, cancellationToken)
+				.ToAsyncEnumerable()
+				.Select(result => result!))
 			.FirstAsync(cancellationToken)
 			.ConfigureAwait(false);
 	}

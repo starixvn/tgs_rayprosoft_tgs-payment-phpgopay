@@ -1,32 +1,32 @@
-{
-  "profiles": {
-    "http": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "OTEL_SERVICE_NAME": "Payment-PhpGoPay(local)",
-        "NODE_IP": "otel.rpgp.cc"
-      },
-      "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5154"
-    },
-    "https": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "OTEL_SERVICE_NAME": "Payment-PhpGoPay(local)",
-        "NODE_IP": "otel.rpgp.cc"
-      },
-      "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7095;http://+:5154"
-    },
-    "Docker": {
-      "commandName": "Docker",
-      "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
-      "publishAllPorts": true
-    }
-  }
+﻿{
+	"profiles": {
+		"http": {
+			"commandName": "Project",
+			"launchBrowser": true,
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "Development",
+				"OTEL_SERVICE_NAME": "Payment-PhpGoPay(local)",
+				"NODE_IP": "otel.rpgp.cc"
+			},
+			"dotnetRunMessages": true,
+			"applicationUrl": "http://localhost:5154"
+		},
+		"https": {
+			"commandName": "Project",
+			"launchBrowser": true,
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "Development",
+				"OTEL_SERVICE_NAME": "Payment-PhpGoPay(local)",
+				"NODE_IP": "otel.rpgp.cc"
+			},
+			"dotnetRunMessages": true,
+			"applicationUrl": "https://localhost:7095;http://+:5154"
+		},
+		"Docker": {
+			"commandName": "Docker",
+			"launchBrowser": true,
+			"launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+			"publishAllPorts": true
+		}
+	}
 }

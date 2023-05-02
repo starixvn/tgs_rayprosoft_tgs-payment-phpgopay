@@ -54,4 +54,3 @@ var withdrawReturn = await paymentClient.WithdrawAsync(
 	JsonSerializer.Serialize(withdrawSettings, PhpGoPayUtility.SerializerOptions)).ConfigureAwait(false);
 
 logger.LogInformation("{withdrawReturn}", withdrawReturn);
-

@@ -56,7 +56,11 @@ builder.Services
 		.AddProcessor(
 			ProcessorTypes.WithdrawProcessorType,
 			"tgs.payment.phpgopay.withdraw",
-			"tgs.payment.phpgopay.withdraw"))
+			"tgs.payment.phpgopay.withdraw")
+		.AddHandler(
+			ProcessorTypes.DepositTimeoutCheckHandlerType,
+			"tgs.payment.phpgopay.deposit.schedule.reject",
+			"tgs.payment.phpgopay.deposit.schedule.reject"))
 	.AddNatsGlobPatternExchange("*");
 
 builder.Services

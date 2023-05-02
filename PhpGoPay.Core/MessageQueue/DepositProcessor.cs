@@ -2,20 +2,25 @@
 using Google.Protobuf;
 using Microsoft.Extensions.Options;
 using Tgs.MessageQueue;
+using Tgs.Payment.Clients;
 using Tgs.Payment.PhpGoPay.Client;
 using Tgs.Payment.Protos;
-using Tgs.Payment.PhpGoPay;
 
 namespace Tgs.Payment.PhpGoPay.MessageQueue;
 
 internal class DepositProcessor : IMessageProcessor
 {
 	private readonly PhpGoClient _phpGoClient;
+	private readonly IPaymentClient _paymentClient;
 	private readonly PhpGoOptions _options;
 
-	public DepositProcessor(PhpGoClient phpGoClient, IOptions<PhpGoOptions> optionsAccessor)
+	public DepositProcessor(
+		PhpGoClient phpGoClient,
+		IPaymentClient paymentClient,
+		IOptions<PhpGoOptions> optionsAccessor)
 	{
 		_phpGoClient = phpGoClient ?? throw new ArgumentNullException(nameof(phpGoClient));
+		_paymentClient = paymentClient ?? throw new ArgumentNullException(nameof(paymentClient));
 		_options = optionsAccessor.Value;
 	}
 
@@ -50,9 +55,15 @@ internal class DepositProcessor : IMessageProcessor
 				depositResponse.RedirectUrl,
 				depositResponse.QrCodeUrl));
 
+		await _paymentClient.ScheduleAsync(
+			"tgs.payment.phpgopay.deposit.schedule.reject",
+			settings.FormId,
+			DateTime.UtcNow.AddMinutes(11D),
+			cancellationToken).ConfigureAwait(false);
+
 		var msg = new DepositResponse
 		{
-			Result = JsonSerializer.Serialize(applyInfo)
+			Result = JsonSerializer.Serialize(applyInfo, PhpGoPayUtility.SerializerOptions)
 		};
 
 		return msg.ToByteArray();
