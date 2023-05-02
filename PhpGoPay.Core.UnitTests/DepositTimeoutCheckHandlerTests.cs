@@ -74,7 +74,7 @@ public class DepositTimeoutCheckHandlerTests
 				{
 					"order_id": "{{request.FormId.ToGuid()}}",
 					"amount": "1000",
-					"status": "3"
+					"status": 3
 				}
 				"""));
 

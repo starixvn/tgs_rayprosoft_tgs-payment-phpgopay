@@ -4,5 +4,5 @@ namespace Tgs.Payment.PhpGoPay;
 public record PhpGoClientQueryResponse(
 	[property: JsonPropertyName("order_id")] Guid FormId,
 	decimal Amount,
-	string Status,
+	[property: JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)] int Status,
 	string Message);

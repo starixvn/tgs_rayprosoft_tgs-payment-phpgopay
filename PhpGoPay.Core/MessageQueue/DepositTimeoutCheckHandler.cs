@@ -71,7 +71,7 @@ internal class DepositTimeoutCheckHandler : IMessageHandler
 
 			var fsm = PaymentStateMachineFactory.CreateDepositStateMachine(depositForm.Status);
 
-			if (result.Status is "3")
+			if (result.Status is 3)
 			{
 				if (fsm.CanFire(PaymentTrigger.Reject))
 				{
@@ -82,7 +82,7 @@ internal class DepositTimeoutCheckHandler : IMessageHandler
 						.ConfigureAwait(false);
 				}
 			}
-			else if (result?.Status is not "5")
+			else if (result?.Status is not 5)
 				await _paymentClient.ScheduleAsync(
 					"tgs.payment.phpgopay.deposit.schedule.reject",
 					formId,
