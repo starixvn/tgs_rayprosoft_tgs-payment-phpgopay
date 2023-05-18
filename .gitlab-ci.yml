@@ -64,7 +64,7 @@ deploy-dev:
           "podServiceName": "Payment-FiveSevenPay",
           "podEnv": [
             {
-              "name": "ConnectionStrings__Nats"
+              "name": "ConnectionStrings__Nats",
               "valueFrom": {
                 "secretKeyRef": {
                   "name": "tgs-connections",
@@ -73,7 +73,7 @@ deploy-dev:
               }
             },
             {
-              "name": "PhpGoPay__PaymentApiUrl"
+              "name": "PhpGoPay__PaymentApiUrl",
               "valueFrom": {
                 "secretKeyRef": {
                   "name": "tgs-connections",
@@ -82,7 +82,7 @@ deploy-dev:
               }
             },
             {
-              "name": "PhpGoPay__CallbackBaseUrl"
+              "name": "PhpGoPay__CallbackBaseUrl",
               "valueFrom": {
                 "secretKeyRef": {
                   "name": "tgs-connections",
