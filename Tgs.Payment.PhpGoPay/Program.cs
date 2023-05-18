@@ -51,16 +51,16 @@ builder.Services
 			builder.Configuration.GetConnectionString("Nats")!)
 		.AddProcessor(
 			ProcessorTypes.DepositProcessorType,
-			"tgs.payment.phpgopay.deposit",
-			"tgs.payment.phpgopay.deposit")
+			$"tgs.payment.{builder.Configuration.GetValue<string>("PhpGoPay:PaymentCode")!.ToLower()}.deposit",
+			$"tgs.payment.{builder.Configuration.GetValue<string>("PhpGoPay:PaymentCode")!.ToLower()}.deposit")
 		.AddProcessor(
 			ProcessorTypes.WithdrawProcessorType,
-			"tgs.payment.phpgopay.withdraw",
-			"tgs.payment.phpgopay.withdraw")
+			$"tgs.payment.{builder.Configuration.GetValue<string>("PhpGoPay:PaymentCode")!.ToLower()}.withdraw",
+			$"tgs.payment.{builder.Configuration.GetValue<string>("PhpGoPay:PaymentCode")!.ToLower()}.withdraw")
 		.AddHandler(
 			ProcessorTypes.DepositTimeoutCheckHandlerType,
-			"tgs.payment.phpgopay.deposit.schedule.reject",
-			"tgs.payment.phpgopay.deposit.schedule.reject"))
+			$"tgs.payment.{builder.Configuration.GetValue<string>("PhpGoPay:PaymentCode")!.ToLower()}.deposit.schedule.reject",
+			$"tgs.payment.{builder.Configuration.GetValue<string>("PhpGoPay:PaymentCode")!.ToLower()}.deposit.schedule.reject"))
 	.AddNatsGlobPatternExchange("*");
 
 builder.Services

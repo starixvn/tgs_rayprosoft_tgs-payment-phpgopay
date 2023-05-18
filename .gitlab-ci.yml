@@ -56,6 +56,43 @@ deploy-dev:
       artifacts: true
   only:
     - main
+  script:
+    - deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+    - |
+      name_template=tgs-57pay cat << EOF | deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+        {
+          "podServiceName": "Payment-FiveSevenPay",
+          "podEnv": [
+            {
+              "name": "ConnectionStrings__Nats"
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "nats"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentApiUrl"
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-fivesevenpay-paymentApiUrl-v2"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__CallbackBaseUrl"
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-fivesevenpay-callback-v2"
+                }
+              }
+            }
+          ]
+        }
+      EOF
   when: on_success
 
 deploy-staging:
@@ -72,6 +109,43 @@ deploy-staging:
       artifacts: true
   only:
     - main
+  script:
+    - deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+    - |
+      name_template=tgs-57pay cat << EOF | deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+        {
+          "podServiceName": "Payment-FiveSevenPay",
+          "podEnv": [
+            {
+              "name": "ConnectionStrings__Nats"
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "nats"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentApiUrl"
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-fivesevenpay-paymentApiUrl-v2"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__CallbackBaseUrl"
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-fivesevenpay-callback-v2"
+                }
+              }
+            }
+          ]
+        }
+      EOF
   when: manual
 
 deploy-prod:
@@ -88,4 +162,41 @@ deploy-prod:
       artifacts: true
   only:
     - main
+  script:
+    - deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+    - |
+      name_template=tgs-57pay cat << EOF | deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+        {
+          "podServiceName": "Payment-FiveSevenPay",
+          "podEnv": [
+            {
+              "name": "ConnectionStrings__Nats"
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "nats"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentApiUrl"
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-fivesevenpay-paymentApiUrl-v2"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__CallbackBaseUrl"
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-fivesevenpay-callback-v2"
+                }
+              }
+            }
+          ]
+        }
+      EOF
   when: manual
