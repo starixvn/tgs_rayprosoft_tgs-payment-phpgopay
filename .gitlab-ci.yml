@@ -59,7 +59,7 @@ deploy-dev:
   script:
     - deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
     - |
-      name_template="tgs-57pay" cat << EOF | deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+      cat << EOF | name_template="tgs-57pay" deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
         {
           "podServiceName": "Payment-FiveSevenPay",
           "podEnv": [
