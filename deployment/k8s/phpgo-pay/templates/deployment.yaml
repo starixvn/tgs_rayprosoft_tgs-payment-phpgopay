@@ -33,26 +33,16 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- $serviceName := .Values.podServiceName -}}
+          {{- $namespace := .Release.Namespace -}}
+          {{- with .Values.podEnv }}
           env:
             - name: OTEL_SERVICE_NAME
-              value: Payment-PhpGoPay({{ .Release.Namespace }})
+              value: {{ $serviceName }}({{ $namespace }})
             - name: NODE_IP
               value: fluent-bit.logging
-            - name: ConnectionStrings__Nats
-              valueFrom:
-                secretKeyRef:
-                  name: tgs-connections
-                  key: nats
-            - name: PhpGoPay__PaymentApiUrl
-              valueFrom:
-                secretKeyRef:
-                  name: tgs-connections
-                  key: payment-phpgopay-paymentApiUrl
-            - name: PhpGoPay__CallbackBaseUrl
-              valueFrom:
-                secretKeyRef:
-                  name: tgs-connections
-                  key: payment-phpgopay-callback
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}

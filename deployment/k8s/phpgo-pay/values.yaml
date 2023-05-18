@@ -33,6 +33,24 @@ podSecurityContext:
   {}
   # fsGroup: 2000
 
+podServiceName: Payment-PhpGoPay
+podEnv:
+  - name: ConnectionStrings__Nats
+    valueFrom:
+      secretKeyRef:
+        name: tgs-connections
+        key: nats
+  - name: PhpGoPay__PaymentApiUrl
+    valueFrom:
+      secretKeyRef:
+        name: tgs-connections
+        key: payment-phpgopay-paymentApiUrl
+  - name: PhpGoPay__CallbackBaseUrl
+    valueFrom:
+      secretKeyRef:
+        name: tgs-connections
+        key: payment-phpgopay-callback
+
 securityContext:
   {}
   # capabilities:
