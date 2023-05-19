@@ -89,6 +89,10 @@ deploy-dev:
                   "key": "payment-fivesevenpay-callback-v2"
                 }
               }
+            },
+            {
+              "name": "PhpGoPay__PaymentCode"
+              "value": "FiveSevenPay-V2"
             }
           ]
         }
@@ -142,6 +146,10 @@ deploy-staging:
                   "key": "payment-fivesevenpay-callback-v2"
                 }
               }
+            },
+            {
+              "name": "PhpGoPay__PaymentCode"
+              "value": "FiveSevenPay-V2"
             }
           ]
         }
@@ -195,6 +203,10 @@ deploy-prod:
                   "key": "payment-fivesevenpay-callback-v2"
                 }
               }
+            },
+            {
+              "name": "PhpGoPay__PaymentCode"
+              "value": "FiveSevenPay-V2"
             }
           ]
         }
