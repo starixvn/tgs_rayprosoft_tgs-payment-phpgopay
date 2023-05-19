@@ -121,7 +121,7 @@ deploy-staging:
           "podServiceName": "Payment-FiveSevenPay",
           "podEnv": [
             {
-              "name": "ConnectionStrings__Nats"
+              "name": "ConnectionStrings__Nats",
               "valueFrom": {
                 "secretKeyRef": {
                   "name": "tgs-connections",
@@ -130,7 +130,7 @@ deploy-staging:
               }
             },
             {
-              "name": "PhpGoPay__PaymentApiUrl"
+              "name": "PhpGoPay__PaymentApiUrl",
               "valueFrom": {
                 "secretKeyRef": {
                   "name": "tgs-connections",
@@ -139,7 +139,7 @@ deploy-staging:
               }
             },
             {
-              "name": "PhpGoPay__CallbackBaseUrl"
+              "name": "PhpGoPay__CallbackBaseUrl",
               "valueFrom": {
                 "secretKeyRef": {
                   "name": "tgs-connections",
@@ -178,7 +178,7 @@ deploy-prod:
           "podServiceName": "Payment-FiveSevenPay",
           "podEnv": [
             {
-              "name": "ConnectionStrings__Nats"
+              "name": "ConnectionStrings__Nats",
               "valueFrom": {
                 "secretKeyRef": {
                   "name": "tgs-connections",
@@ -187,7 +187,7 @@ deploy-prod:
               }
             },
             {
-              "name": "PhpGoPay__PaymentApiUrl"
+              "name": "PhpGoPay__PaymentApiUrl",
               "valueFrom": {
                 "secretKeyRef": {
                   "name": "tgs-connections",
@@ -196,7 +196,7 @@ deploy-prod:
               }
             },
             {
-              "name": "PhpGoPay__CallbackBaseUrl"
+              "name": "PhpGoPay__CallbackBaseUrl",
               "valueFrom": {
                 "secretKeyRef": {
                   "name": "tgs-connections",
