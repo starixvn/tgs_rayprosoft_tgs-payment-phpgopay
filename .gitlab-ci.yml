@@ -91,7 +91,7 @@ deploy-dev:
               }
             },
             {
-              "name": "PhpGoPay__PaymentCode"
+              "name": "PhpGoPay__PaymentCode",
               "value": "FiveSevenPay-V2"
             }
           ]
@@ -148,7 +148,7 @@ deploy-staging:
               }
             },
             {
-              "name": "PhpGoPay__PaymentCode"
+              "name": "PhpGoPay__PaymentCode",
               "value": "FiveSevenPay-V2"
             }
           ]
@@ -205,7 +205,7 @@ deploy-prod:
               }
             },
             {
-              "name": "PhpGoPay__PaymentCode"
+              "name": "PhpGoPay__PaymentCode",
               "value": "FiveSevenPay-V2"
             }
           ]
