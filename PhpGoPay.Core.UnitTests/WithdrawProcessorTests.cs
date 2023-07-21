@@ -33,7 +33,8 @@ public class WithdrawProcessorTests
 		{
 			CallbackBaseUrl = new Uri("https://dev-payment.rpgp.cc/phpgopay-test"),
 			PaymentApiUrl = new Uri("http://localhost"),
-			PaymentServiceBaseUrl = new Uri("http://localhost:5541")
+			PaymentServiceBaseUrl = new Uri("http://localhost:5541"),
+			PaymentCode = "phpgopay"
 		};
 
 		var sut = new WithdrawProcessor(
