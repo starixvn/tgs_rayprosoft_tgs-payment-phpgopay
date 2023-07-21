@@ -97,6 +97,45 @@ deploy-dev:
           ]
         }
       EOF
+    - |
+      cat << EOF | name_template="tgs-wpay" deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+        {
+          "podServiceName": "Payment-WPay",
+          "podEnv": [
+            {
+              "name": "ConnectionStrings__Nats",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "nats"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentApiUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-wpay-paymentApiUrl"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__CallbackBaseUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-wpay-callback"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentCode",
+              "value": "WPay"
+            }
+          ]
+        }
+      EOF
   when: on_success
 
 deploy-staging:
@@ -154,6 +193,45 @@ deploy-staging:
           ]
         }
       EOF
+    - |
+      cat << EOF | name_template="tgs-wpay" deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+        {
+          "podServiceName": "Payment-WPay",
+          "podEnv": [
+            {
+              "name": "ConnectionStrings__Nats",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "nats"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentApiUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-wpay-paymentApiUrl"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__CallbackBaseUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-wpay-callback"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentCode",
+              "value": "WPay"
+            }
+          ]
+        }
+      EOF  
   when: manual
 
 deploy-prod:
@@ -207,6 +285,45 @@ deploy-prod:
             {
               "name": "PhpGoPay__PaymentCode",
               "value": "FiveSevenPay-V2"
+            }
+          ]
+        }
+      EOF
+    - |
+      cat << EOF | name_template="tgs-wpay" deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+        {
+          "podServiceName": "Payment-WPay",
+          "podEnv": [
+            {
+              "name": "ConnectionStrings__Nats",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "nats"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentApiUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-wpay-paymentApiUrl"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__CallbackBaseUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-wpay-callback"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentCode",
+              "value": "WPay"
             }
           ]
         }
