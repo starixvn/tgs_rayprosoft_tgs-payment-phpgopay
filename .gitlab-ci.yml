@@ -98,9 +98,9 @@ deploy-dev:
         }
       EOF
     - |
-      cat << EOF | name_template="tgs-wpay" deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+      cat << EOF | name_template="tgs-winpay" deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
         {
-          "podServiceName": "Payment-WPay",
+          "podServiceName": "Payment-WinPay",
           "podEnv": [
             {
               "name": "ConnectionStrings__Nats",
@@ -116,7 +116,7 @@ deploy-dev:
               "valueFrom": {
                 "secretKeyRef": {
                   "name": "tgs-connections",
-                  "key": "payment-wpay-paymentApiUrl"
+                  "key": "payment-winpay-paymentApiUrl"
                 }
               }
             },
@@ -125,13 +125,13 @@ deploy-dev:
               "valueFrom": {
                 "secretKeyRef": {
                   "name": "tgs-connections",
-                  "key": "payment-wpay-callback"
+                  "key": "payment-winpay-callback"
                 }
               }
             },
             {
               "name": "PhpGoPay__PaymentCode",
-              "value": "WPay"
+              "value": "WinPay"
             }
           ]
         }
@@ -194,9 +194,9 @@ deploy-staging:
         }
       EOF
     - |
-      cat << EOF | name_template="tgs-wpay" deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+      cat << EOF | name_template="tgs-winpay" deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
         {
-          "podServiceName": "Payment-WPay",
+          "podServiceName": "Payment-WinPay",
           "podEnv": [
             {
               "name": "ConnectionStrings__Nats",
@@ -212,7 +212,7 @@ deploy-staging:
               "valueFrom": {
                 "secretKeyRef": {
                   "name": "tgs-connections",
-                  "key": "payment-wpay-paymentApiUrl"
+                  "key": "payment-winpay-paymentApiUrl"
                 }
               }
             },
@@ -221,13 +221,13 @@ deploy-staging:
               "valueFrom": {
                 "secretKeyRef": {
                   "name": "tgs-connections",
-                  "key": "payment-wpay-callback"
+                  "key": "payment-winpay-callback"
                 }
               }
             },
             {
               "name": "PhpGoPay__PaymentCode",
-              "value": "WPay"
+              "value": "WinPay"
             }
           ]
         }
@@ -290,9 +290,9 @@ deploy-prod:
         }
       EOF
     - |
-      cat << EOF | name_template="tgs-wpay" deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+      cat << EOF | name_template="tgs-winpay" deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
         {
-          "podServiceName": "Payment-WPay",
+          "podServiceName": "Payment-WinPay",
           "podEnv": [
             {
               "name": "ConnectionStrings__Nats",
@@ -308,7 +308,7 @@ deploy-prod:
               "valueFrom": {
                 "secretKeyRef": {
                   "name": "tgs-connections",
-                  "key": "payment-wpay-paymentApiUrl"
+                  "key": "payment-winpay-paymentApiUrl"
                 }
               }
             },
@@ -317,13 +317,13 @@ deploy-prod:
               "valueFrom": {
                 "secretKeyRef": {
                   "name": "tgs-connections",
-                  "key": "payment-wpay-callback"
+                  "key": "payment-winpay-callback"
                 }
               }
             },
             {
               "name": "PhpGoPay__PaymentCode",
-              "value": "WPay"
+              "value": "WinPay"
             }
           ]
         }
