@@ -46,7 +46,7 @@ public class WithdrawController : ControllerBase
 
 		if (withdrawForm == null)
 		{
-			_logger.LogWarning("Can't found deposit form({id}).", formId);
+			_logger.LogWarning("Can't found withdraw form({id}).", formId);
 			return "FAIL";
 		}
 
