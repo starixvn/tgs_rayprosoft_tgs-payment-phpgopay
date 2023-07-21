@@ -56,7 +56,7 @@ internal class DepositProcessor : IMessageProcessor
 				depositResponse.QrCodeUrl));
 
 		await _paymentClient.ScheduleAsync(
-			"tgs.payment.phpgopay.deposit.schedule.reject",
+			$"tgs.payment.{_options.PaymentCode.ToLower()}.deposit.schedule.reject",
 			settings.FormId,
 			DateTime.UtcNow.AddMinutes(11D),
 			cancellationToken).ConfigureAwait(false);

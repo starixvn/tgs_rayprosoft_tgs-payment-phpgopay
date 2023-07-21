@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Tgs.MessageQueue;
 using Tgs.Payment.Clients;
 using Tgs.Payment.PhpGoPay.Client;
@@ -13,17 +14,20 @@ internal class DepositTimeoutCheckHandler : IMessageHandler
 	private readonly PhpGoClient _phpGoClient;
 	private readonly IPaymentClient _paymentClient;
 	private readonly ILogger<DepositTimeoutCheckHandler> _logger;
+	private readonly PhpGoOptions _options;
 
 	public DepositTimeoutCheckHandler(
 		IPaymentServiceClient paymentServiceClient,
 		PhpGoClient phpGoClient,
 		IPaymentClient paymentClient,
+		IOptions<PhpGoOptions> optionsAccessor,
 		ILogger<DepositTimeoutCheckHandler> logger)
 	{
 		_paymentServiceClient = paymentServiceClient ?? throw new ArgumentNullException(nameof(paymentServiceClient));
 		_phpGoClient = phpGoClient ?? throw new ArgumentNullException(nameof(phpGoClient));
 		_paymentClient = paymentClient ?? throw new ArgumentNullException(nameof(paymentClient));
 		_logger = logger ?? throw new ArgumentNullException(nameof(logger));
+		_options = optionsAccessor.Value;
 	}
 
 	public async ValueTask HandleAsync(ReadOnlyMemory<byte> data, CancellationToken cancellationToken = default)
@@ -84,7 +88,7 @@ internal class DepositTimeoutCheckHandler : IMessageHandler
 			}
 			else if (result?.Status is not 5)
 				await _paymentClient.ScheduleAsync(
-					"tgs.payment.phpgopay.deposit.schedule.reject",
+					$"tgs.payment.{_options.PaymentCode.ToLower()}.deposit.schedule.reject",
 					formId,
 					DateTime.UtcNow.AddMinutes(10D),
 					cancellationToken).ConfigureAwait(false);
@@ -94,7 +98,7 @@ internal class DepositTimeoutCheckHandler : IMessageHandler
 			_logger.LogError(ex, "Process deposit timeout error!");
 
 			await _paymentClient.ScheduleAsync(
-				"tgs.payment.phpgopay.deposit.schedule.reject",
+				$"tgs.payment.{_options.PaymentCode.ToLower()}.deposit.schedule.reject",
 				formId,
 				DateTime.UtcNow.AddMinutes(10D),
 				cancellationToken).ConfigureAwait(false);
