@@ -1,10 +1,10 @@
 ﻿using System.Text.Json;
 using Google.Protobuf;
 using Microsoft.Extensions.Options;
-using Tgs.MessageQueue;
 using Tgs.Payment.Clients;
 using Tgs.Payment.PhpGoPay.Client;
 using Tgs.Payment.Protos;
+using Valhalla.MessageQueue;
 
 namespace Tgs.Payment.PhpGoPay.MessageQueue;
 

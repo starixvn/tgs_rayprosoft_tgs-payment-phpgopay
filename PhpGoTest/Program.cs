@@ -9,7 +9,7 @@ var builder = Host.CreateApplicationBuilder(args);
 
 builder.Services
 	.AddPaymentClient()
-	.AddMessageQueue()
+	.AddPhoenixToolkitsMessageQueue()
 	.AddNatsMessageQueue(natsConfig => natsConfig
 		.ConfigQueueOptions((opt, _) => opt.Url = "nats://localhost:4222"))
 	.AddNatsGlobPatternExchange("*");

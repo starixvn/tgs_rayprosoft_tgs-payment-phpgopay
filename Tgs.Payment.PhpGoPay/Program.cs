@@ -45,7 +45,7 @@ builder.Services
 
 			http.BaseAddress = options.PaymentServiceBaseUrl;
 		}))
-	.AddMessageQueue()
+	.AddPhoenixToolkitsMessageQueue()	
 	.AddNatsMessageQueue(natsConfig => natsConfig
 		.ConfigQueueOptions((options, _) => options.Url =
 			builder.Configuration.GetConnectionString("Nats")!)
