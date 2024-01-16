@@ -8,29 +8,20 @@ using Valhalla.MessageQueue;
 
 namespace Tgs.Payment.PhpGoPay.MessageQueue;
 
-internal class DepositTimeoutCheckHandler : IMessageHandler
+internal class DepositTimeoutCheckHandler(
+	IPaymentServiceClient paymentServiceClient,
+	PhpGoClient phpGoClient,
+	IPaymentClient paymentClient,
+	IOptions<PhpGoOptions> optionsAccessor,
+	ILogger<DepositTimeoutCheckHandler> logger) : IMessageHandler<ReadOnlyMemory<byte>>
 {
-	private readonly IPaymentServiceClient _paymentServiceClient;
-	private readonly PhpGoClient _phpGoClient;
-	private readonly IPaymentClient _paymentClient;
-	private readonly ILogger<DepositTimeoutCheckHandler> _logger;
-	private readonly PhpGoOptions _options;
+	private readonly IPaymentServiceClient _paymentServiceClient = paymentServiceClient ?? throw new ArgumentNullException(nameof(paymentServiceClient));
+	private readonly PhpGoClient _phpGoClient = phpGoClient ?? throw new ArgumentNullException(nameof(phpGoClient));
+	private readonly IPaymentClient _paymentClient = paymentClient ?? throw new ArgumentNullException(nameof(paymentClient));
+	private readonly ILogger<DepositTimeoutCheckHandler> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+	private readonly PhpGoOptions _options = optionsAccessor.Value;
 
-	public DepositTimeoutCheckHandler(
-		IPaymentServiceClient paymentServiceClient,
-		PhpGoClient phpGoClient,
-		IPaymentClient paymentClient,
-		IOptions<PhpGoOptions> optionsAccessor,
-		ILogger<DepositTimeoutCheckHandler> logger)
-	{
-		_paymentServiceClient = paymentServiceClient ?? throw new ArgumentNullException(nameof(paymentServiceClient));
-		_phpGoClient = phpGoClient ?? throw new ArgumentNullException(nameof(phpGoClient));
-		_paymentClient = paymentClient ?? throw new ArgumentNullException(nameof(paymentClient));
-		_logger = logger ?? throw new ArgumentNullException(nameof(logger));
-		_options = optionsAccessor.Value;
-	}
-
-	public async ValueTask HandleAsync(ReadOnlyMemory<byte> data, CancellationToken cancellationToken = default)
+	public async ValueTask HandleAsync(string subject, ReadOnlyMemory<byte> data, IEnumerable<MessageHeaderValue>? headerValues, CancellationToken cancellationToken = default)
 	{
 		var request = ScheduleRequest.Parser.ParseFrom(data.Span);
 

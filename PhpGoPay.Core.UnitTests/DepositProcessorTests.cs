@@ -68,7 +68,10 @@ public class DepositProcessorTests
 				"""));
 
 		// Act
-		var actual = await sut.HandleAsync(request.ToByteArray());
+		var actual = await sut.HandleAsync(
+			"tgs.payment.phpgopay.deposit",
+			request.ToByteArray(),
+			null);
 		var response = DepositResponse.Parser.ParseFrom(actual.Span);
 		var applyInfo = JsonSerializer.Deserialize<PhpGoPayDepositApplyInfo>(response.Result, PhpGoPayUtility.SerializerOptions);
 

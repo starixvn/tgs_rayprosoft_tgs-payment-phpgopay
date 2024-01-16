@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.Extensions.Options;
+using NATS.Client.Core;
 using OpenTelemetry.Instrumentation.AspNetCore;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
@@ -45,10 +46,14 @@ builder.Services
 
 			http.BaseAddress = options.PaymentServiceBaseUrl;
 		}))
-	.AddPhoenixToolkitsMessageQueue()	
+	.AddKeyedSingleton("Nats",
+	(sp, _) => new NatsConnection(NatsOpts.Default with 
+	{ 
+		Url = builder.Configuration.GetConnectionString("Nats")!
+	}))
+	.AddMessageQueue()	
 	.AddNatsMessageQueue(natsConfig => natsConfig
-		.ConfigQueueOptions((options, _) => options.Url =
-			builder.Configuration.GetConnectionString("Nats")!)
+		.ConfigureResolveConnection(sp => sp.GetRequiredKeyedService<NatsConnection>("Nats"))
 		.AddProcessor(
 			ProcessorTypes.DepositProcessorType,
 			$"tgs.payment.{builder.Configuration.GetValue<string>("PhpGoPay:PaymentCode")!.ToLower()}.deposit",
@@ -89,7 +94,7 @@ builder.Services
 		.AddAspNetCoreInstrumentation()
 		.AddOtlpExporter())
 	.Services
-	.Configure<AspNetCoreInstrumentationOptions>(options => options.Filter =
+	.Configure<AspNetCoreTraceInstrumentationOptions>(options => options.Filter =
 		httpContext => !httpContext.Request.Path.HasValue
 			|| !httpContext.Request.Path.StartsWithSegments("/swagger")
 			&& !httpContext.Request.Path.StartsWithSegments("/healthz")
