@@ -174,7 +174,46 @@ deploy-dev:
             }
           ]
         }
-      EOF  
+      EOF
+    - |
+      cat << EOF | name_template="tgs-123pay" deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+        {
+          "podServiceName": "Payment-123Pay",
+          "podEnv": [
+            {
+              "name": "ConnectionStrings__Nats",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "nats"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentApiUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-123pay-paymentApiUrl"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__CallbackBaseUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-123pay-callback"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentCode",
+              "value": "123Pay"
+            }
+          ]
+        }
+      EOF
   when: on_success
 
 deploy-staging:
@@ -306,6 +345,45 @@ deploy-staging:
             {
               "name": "PhpGoPay__PaymentCode",
               "value": "MalakiPay-V2"
+            }
+          ]
+        }
+      EOF
+    - |
+      cat << EOF | name_template="tgs-123pay" deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+        {
+          "podServiceName": "Payment-123Pay",
+          "podEnv": [
+            {
+              "name": "ConnectionStrings__Nats",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "nats"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentApiUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-123pay-paymentApiUrl"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__CallbackBaseUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-123pay-callback"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentCode",
+              "value": "123Pay"
             }
           ]
         }
@@ -441,6 +519,45 @@ deploy-prod:
             {
               "name": "PhpGoPay__PaymentCode",
               "value": "MalakiPay-V2"
+            }
+          ]
+        }
+      EOF
+    - |
+      cat << EOF | name_template="tgs-123pay" deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+        {
+          "podServiceName": "Payment-123Pay",
+          "podEnv": [
+            {
+              "name": "ConnectionStrings__Nats",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "nats"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentApiUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-123pay-paymentApiUrl"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__CallbackBaseUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-123pay-callback"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentCode",
+              "value": "123Pay"
             }
           ]
         }

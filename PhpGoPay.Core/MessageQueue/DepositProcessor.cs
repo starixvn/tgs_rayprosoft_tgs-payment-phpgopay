@@ -8,23 +8,20 @@ using Valhalla.MessageQueue;
 
 namespace Tgs.Payment.PhpGoPay.MessageQueue;
 
-internal class DepositProcessor : IMessageProcessor
+internal class DepositProcessor(
+	PhpGoClient phpGoClient,
+	IPaymentClient paymentClient,
+	IOptions<PhpGoOptions> optionsAccessor) : IMessageProcessor<ReadOnlyMemory<byte>, ReadOnlyMemory<byte>>
 {
-	private readonly PhpGoClient _phpGoClient;
-	private readonly IPaymentClient _paymentClient;
-	private readonly PhpGoOptions _options;
+	private readonly PhpGoClient _phpGoClient = phpGoClient ?? throw new ArgumentNullException(nameof(phpGoClient));
+	private readonly IPaymentClient _paymentClient = paymentClient ?? throw new ArgumentNullException(nameof(paymentClient));
+	private readonly PhpGoOptions _options = optionsAccessor.Value;
 
-	public DepositProcessor(
-		PhpGoClient phpGoClient,
-		IPaymentClient paymentClient,
-		IOptions<PhpGoOptions> optionsAccessor)
-	{
-		_phpGoClient = phpGoClient ?? throw new ArgumentNullException(nameof(phpGoClient));
-		_paymentClient = paymentClient ?? throw new ArgumentNullException(nameof(paymentClient));
-		_options = optionsAccessor.Value;
-	}
-
-	public async ValueTask<ReadOnlyMemory<byte>> HandleAsync(ReadOnlyMemory<byte> data, CancellationToken cancellationToken = default)
+	public async ValueTask<ReadOnlyMemory<byte>> HandleAsync(
+		string subject,
+		ReadOnlyMemory<byte> data,
+		IEnumerable<MessageHeaderValue>? headerValues,
+		CancellationToken cancellationToken = default)
 	{
 		var request = DepositRequest.Parser.ParseFrom(data.Span);
 

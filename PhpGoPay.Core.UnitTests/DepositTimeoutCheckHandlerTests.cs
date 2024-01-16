@@ -88,7 +88,10 @@ public class DepositTimeoutCheckHandlerTests
 				"""));
 
 		// Act
-		await sut.HandleAsync(request.ToByteArray());
+		await sut.HandleAsync(
+			   subject: $"tgs.payment.{options.PaymentCode.ToLower()}.deposit.schedule.reject",
+			   request.ToByteArray(),
+			   null);
 
 		// Assert
 		_ = fakePaymentClient.Received(1)
@@ -170,7 +173,10 @@ public class DepositTimeoutCheckHandlerTests
 				"""));
 
 		// Act
-		await sut.HandleAsync(request.ToByteArray());
+		await sut.HandleAsync(
+			subject: $"tgs.payment.{options.PaymentCode}.deposit.schedule.reject",
+			request.ToByteArray(),
+			null);
 
 		// Assert
 		_ = fakePaymentClient.Received(1)
