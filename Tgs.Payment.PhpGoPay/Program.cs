@@ -46,11 +46,12 @@ builder.Services
 
 			http.BaseAddress = options.PaymentServiceBaseUrl;
 		}))
-	.AddKeyedSingleton("Nats",
-	(sp, _) => new NatsConnection(NatsOpts.Default with
-	{
-		Url = builder.Configuration.GetConnectionString("Nats")!
-	}))
+	.AddKeyedSingleton(
+		"Nats",
+		(sp, _) => new NatsConnection(NatsOpts.Default with
+		{
+			Url = builder.Configuration.GetConnectionString("Nats")!
+		}))
 	.AddMessageQueue()
 	.AddNatsMessageQueue(natsConfig => natsConfig
 		.ConfigureResolveConnection(sp => sp.GetRequiredKeyedService<NatsConnection>("Nats"))
