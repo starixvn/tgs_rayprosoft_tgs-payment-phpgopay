@@ -9,14 +9,9 @@ using Xunit.Abstractions;
 
 namespace Tgs.Payment.PhpGoPay.IntegrationTests;
 
-public class DepositTests
+public class DepositTests(ITestOutputHelper testOutputHelper)
 {
-	private readonly ITestOutputHelper _testOutputHelper;
-
-	public DepositTests(ITestOutputHelper testOutputHelper)
-	{
-		_testOutputHelper = testOutputHelper ?? throw new ArgumentNullException(nameof(testOutputHelper));
-	}
+	private readonly ITestOutputHelper _testOutputHelper = testOutputHelper ?? throw new ArgumentNullException(nameof(testOutputHelper));
 
 	[Fact]
 	public async Task 儲值回呼()

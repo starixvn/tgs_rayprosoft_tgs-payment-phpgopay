@@ -10,14 +10,9 @@ namespace Tgs.Payment.PhpGoPay.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class WithdrawController : ControllerBase
+public class WithdrawController(ILogger<WithdrawController> logger) : ControllerBase
 {
-	private readonly ILogger<WithdrawController> _logger;
-
-	public WithdrawController(ILogger<WithdrawController> logger)
-	{
-		_logger = logger ?? throw new ArgumentNullException(nameof(logger));
-	}
+	private readonly ILogger<WithdrawController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
 	[HttpPost("callback", Name = "NotifyWithdraw")]
 	[Consumes("multipart/form-data")]

@@ -5,24 +5,17 @@ using Microsoft.Extensions.Logging;
 
 namespace Tgs.Payment.PhpGoPay;
 
-internal class PhpGoClient
+internal class PhpGoClient(HttpClient httpClient, PhpGoHasher phpGoHasher, ILogger<PhpGoClient> logger)
 {
-	private readonly HttpClient _httpClient;
-	private readonly PhpGoHasher _phpGoHasher;
-	private readonly ILogger<PhpGoClient> _logger;
+	private readonly HttpClient _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+	private readonly PhpGoHasher _phpGoHasher = phpGoHasher ?? throw new ArgumentNullException(nameof(phpGoHasher));
+	private readonly ILogger<PhpGoClient> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
 	private readonly JsonSerializerOptions _jsonSerializerOptions = new(JsonSerializerDefaults.Web)
 	{
 		PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
 		DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault
 	};
-
-	public PhpGoClient(HttpClient httpClient, PhpGoHasher phpGoHasher, ILogger<PhpGoClient> logger)
-	{
-		_httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-		_phpGoHasher = phpGoHasher ?? throw new ArgumentNullException(nameof(phpGoHasher));
-		_logger = logger ?? throw new ArgumentNullException(nameof(logger));
-	}
 
 	public async Task<PhpGoClientDepositResponse> DepositAsync(
 		string merchant,

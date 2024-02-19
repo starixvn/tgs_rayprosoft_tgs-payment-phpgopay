@@ -47,11 +47,11 @@ builder.Services
 			http.BaseAddress = options.PaymentServiceBaseUrl;
 		}))
 	.AddKeyedSingleton("Nats",
-	(sp, _) => new NatsConnection(NatsOpts.Default with 
-	{ 
+	(sp, _) => new NatsConnection(NatsOpts.Default with
+	{
 		Url = builder.Configuration.GetConnectionString("Nats")!
 	}))
-	.AddMessageQueue()	
+	.AddMessageQueue()
 	.AddNatsMessageQueue(natsConfig => natsConfig
 		.ConfigureResolveConnection(sp => sp.GetRequiredKeyedService<NatsConnection>("Nats"))
 		.AddProcessor(
@@ -68,6 +68,7 @@ builder.Services
 			$"tgs.payment.{builder.Configuration.GetValue<string>("PhpGoPay:PaymentCode")!.ToLower()}.deposit.schedule.reject"))
 	.AddNatsGlobPatternExchange("*");
 
+var excludeExtensions = new[] { "html", "ico", "png", "jpg" };
 builder.Services
 	.AddProfileViewer()
 	.AddHttpLogging(logging =>
@@ -99,7 +100,7 @@ builder.Services
 			|| !httpContext.Request.Path.StartsWithSegments("/swagger")
 			&& !httpContext.Request.Path.StartsWithSegments("/healthz")
 			&& !httpContext.Request.Path.StartsWithSegments("/metrics")
-			&& !new[] { "html", "ico", "png", "jpg" }.Any(
+			&& !excludeExtensions.Any(
 				ext => httpContext.Request.Path.Value.EndsWith($".{ext}")));
 
 var app = builder.Build();

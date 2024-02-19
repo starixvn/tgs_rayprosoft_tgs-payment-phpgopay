@@ -5,7 +5,7 @@ public class PhpGoBankCode
 	public static readonly PhpGoBankCode GCash = new("gcash");
 	public static readonly PhpGoBankCode PayMaya = new("PMP");
 
-	private static readonly IReadOnlyDictionary<string, PhpGoBankCode> _BankCodes = new Dictionary<string, PhpGoBankCode>
+	private static readonly Dictionary<string, PhpGoBankCode> _BankCodes = new()
 	{
 		["gcash"] = GCash,
 		["PMP"] = PayMaya

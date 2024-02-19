@@ -5,14 +5,9 @@ using Tgs.ServiceUtility;
 
 namespace Tgs.Payment.PhpGoPay.ApplicationServices;
 
-internal class GetWithdrawFormQueryService : IGetService<GetWithdrawFormQuery, WithdrawForm?>
+internal class GetWithdrawFormQueryService(IPaymentServiceClient paymentServiceClient) : IGetService<GetWithdrawFormQuery, WithdrawForm?>
 {
-	private readonly IPaymentServiceClient _paymentServiceClient;
-
-	public GetWithdrawFormQueryService(IPaymentServiceClient paymentServiceClient)
-	{
-		_paymentServiceClient = paymentServiceClient ?? throw new ArgumentNullException(nameof(paymentServiceClient));
-	}
+	private readonly IPaymentServiceClient _paymentServiceClient = paymentServiceClient ?? throw new ArgumentNullException(nameof(paymentServiceClient));
 
 	public async ValueTask<WithdrawForm?> GetAsync(GetWithdrawFormQuery query, CancellationToken cancellationToken = default)
 	{
