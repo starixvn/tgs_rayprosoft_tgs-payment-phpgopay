@@ -5,12 +5,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Tgs.Payment.PhpGoPay;
 
-internal class PhpGoClient(HttpClient httpClient, PhpGoHasher phpGoHasher, ILogger<PhpGoClient> logger)
+internal class PhpGoClient(
+	HttpClient httpClient,
+	PhpGoHasher phpGoHasher,
+	ILogger<PhpGoClient> logger)
 {
-	private readonly HttpClient _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-	private readonly PhpGoHasher _phpGoHasher = phpGoHasher ?? throw new ArgumentNullException(nameof(phpGoHasher));
-	private readonly ILogger<PhpGoClient> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
 	private readonly JsonSerializerOptions _jsonSerializerOptions = new(JsonSerializerDefaults.Web)
 	{
 		PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -33,11 +32,11 @@ internal class PhpGoClient(HttpClient httpClient, PhpGoHasher phpGoHasher, ILogg
 			["callback_url"] = order.CallbackUrl.ToString(),
 			["return_url"] = order.ReturnUrl.ToString()
 		};
-		var sign = _phpGoHasher.ComputeHash(key, requestData);
+		var sign = phpGoHasher.ComputeHash(key, requestData);
 
 		requestData["sign"] = sign;
 
-		return await _httpClient.PostAsJsonAsync(
+		return await httpClient.PostAsJsonAsync(
 			"/api/transfer",
 			requestData,
 			_jsonSerializerOptions,
@@ -52,11 +51,11 @@ internal class PhpGoClient(HttpClient httpClient, PhpGoHasher phpGoHasher, ILogg
 				if (node is null)
 					throw new ApiFailException("Deposit response can't read.");
 
-				if (_logger.IsEnabled(LogLevel.Information))
+				if (logger.IsEnabled(LogLevel.Information))
 				{
 					var bodyJson = JsonSerializer.Serialize(node, _jsonSerializerOptions);
 
-					_logger.LogInformation("Deposit Body: {bodyJson}", bodyJson);
+					logger.LogInformation("Deposit Body: {bodyJson}", bodyJson);
 				}
 
 				if (node["status"]?.ToString() != "1")
@@ -90,11 +89,11 @@ internal class PhpGoClient(HttpClient httpClient, PhpGoHasher phpGoHasher, ILogg
 			}
 		};
 
-		var sign = _phpGoHasher.ComputeHash(key, requestData);
+		var sign = phpGoHasher.ComputeHash(key, requestData);
 
 		requestData["sign"] = sign;
 
-		_ = await _httpClient.PostAsJsonAsync(
+		_ = await httpClient.PostAsJsonAsync(
 			"/api/daifu",
 			requestData,
 			_jsonSerializerOptions,
@@ -109,11 +108,11 @@ internal class PhpGoClient(HttpClient httpClient, PhpGoHasher phpGoHasher, ILogg
 				if (node is null)
 					throw new ApiFailException("Deposit response can't read.");
 
-				if (_logger.IsEnabled(LogLevel.Information))
+				if (logger.IsEnabled(LogLevel.Information))
 				{
 					var bodyJson = JsonSerializer.Serialize(node, _jsonSerializerOptions);
 
-					_logger.LogInformation("Deposit Body: {bodyJson}", bodyJson);
+					logger.LogInformation("Deposit Body: {bodyJson}", bodyJson);
 				}
 
 				if (node["status"]?.ToString() != "1")
@@ -135,11 +134,11 @@ internal class PhpGoClient(HttpClient httpClient, PhpGoHasher phpGoHasher, ILogg
 			["order_id"] = formId.ToString(),
 		};
 
-		var sign = _phpGoHasher.ComputeHash(key, requestData);
+		var sign = phpGoHasher.ComputeHash(key, requestData);
 
 		requestData["sign"] = sign;
 
-		return await _httpClient.PostAsJsonAsync(
+		return await httpClient.PostAsJsonAsync(
 			"/api/query",
 			requestData,
 			_jsonSerializerOptions,
@@ -148,6 +147,32 @@ internal class PhpGoClient(HttpClient httpClient, PhpGoHasher phpGoHasher, ILogg
 			.Do(response => response.EnsureSuccessStatusCode())
 			.SelectMany(response => response.Content
 				.ReadFromJsonAsync<PhpGoClientQueryResponse>(_jsonSerializerOptions, cancellationToken)
+				.ToAsyncEnumerable()
+				.Select(result => result!))
+			.FirstAsync(cancellationToken)
+			.ConfigureAwait(false);
+	}
+
+	public async ValueTask<PhpGoClientBalanceResponse> GetBalanceAsync(string merchant, string key, CancellationToken cancellationToken = default)
+	{
+		var requestData = new Dictionary<string, string?>
+		{
+			["merchant"] = merchant
+		};
+
+		var sign = phpGoHasher.ComputeHash(key, requestData);
+
+		requestData["sign"] = sign;
+
+		return await httpClient.PostAsJsonAsync(
+			"/api/me",
+			requestData,
+			_jsonSerializerOptions,
+			cancellationToken)
+			.ToAsyncEnumerable()
+			.Do(response => response.EnsureSuccessStatusCode())
+			.SelectMany(response => response.Content
+				.ReadFromJsonAsync<PhpGoClientBalanceResponse>(_jsonSerializerOptions, cancellationToken)
 				.ToAsyncEnumerable()
 				.Select(result => result!))
 			.FirstAsync(cancellationToken)
