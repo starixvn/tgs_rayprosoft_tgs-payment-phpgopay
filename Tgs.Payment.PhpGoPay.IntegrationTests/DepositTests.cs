@@ -5,23 +5,23 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Tgs.Payment.Clients;
 using Tgs.Payment.PhpGoPay.Client;
+using Tgs.Payment.Protos;
+using Xunit;
 using Xunit.Abstractions;
 
 namespace Tgs.Payment.PhpGoPay.IntegrationTests;
 
 public class DepositTests(ITestOutputHelper testOutputHelper)
 {
-	private readonly ITestOutputHelper _testOutputHelper = testOutputHelper ?? throw new ArgumentNullException(nameof(testOutputHelper));
-
 	[Fact]
-	public async Task 儲值回呼()
+	public async Task 整合測試_儲值回呼()
 	{
 		var fakePaymentServiceClient = Substitute.For<IPaymentServiceClient>();
 		var fakePaymentClient = Substitute.For<IPaymentClient>();
 
 		await using var web = PhpGoPayTestHost.Factory
 			.WithWebHostBuilder(hostBuilder => hostBuilder
-				.ConfigureLogging(logging => logging.AddXUnit(_testOutputHelper))
+				.ConfigureLogging(logging => logging.AddXUnit(testOutputHelper))
 				.ConfigureServices(services => services
 					.AddSingleton(fakePaymentServiceClient)
 					.AddSingleton(fakePaymentClient)));

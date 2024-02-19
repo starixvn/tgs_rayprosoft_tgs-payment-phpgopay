@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using Google.Protobuf;
 using Microsoft.Extensions.Options;
 using Tgs.Payment.Clients;
 using Tgs.Payment.PhpGoPay.Client;
@@ -11,33 +10,30 @@ namespace Tgs.Payment.PhpGoPay.MessageQueue;
 internal class DepositProcessor(
 	PhpGoClient phpGoClient,
 	IPaymentClient paymentClient,
-	IOptions<PhpGoOptions> optionsAccessor) : IMessageProcessor<ReadOnlyMemory<byte>, ReadOnlyMemory<byte>>
+	IOptions<PhpGoOptions> optionsAccessor)
+	: IMessageProcessor<DepositRequest, DepositResponse>
 {
-	private readonly PhpGoClient _phpGoClient = phpGoClient ?? throw new ArgumentNullException(nameof(phpGoClient));
-	private readonly IPaymentClient _paymentClient = paymentClient ?? throw new ArgumentNullException(nameof(paymentClient));
 	private readonly PhpGoOptions _options = optionsAccessor.Value;
 
-	public async ValueTask<ReadOnlyMemory<byte>> HandleAsync(
+	public async ValueTask<DepositResponse> HandleAsync(
 		string subject,
-		ReadOnlyMemory<byte> data,
+		DepositRequest data,
 		IEnumerable<MessageHeaderValue>? headerValues,
 		CancellationToken cancellationToken = default)
 	{
-		var request = DepositRequest.Parser.ParseFrom(data.Span);
-
 		var settings = JsonSerializer.Deserialize<PhpGoPayDepositSettings>(
-			request.ApplyInfo,
+			data.ApplyInfo,
 			PhpGoPayUtility.SerializerOptions)!;
 
 		var order = new PhpGoClientDepositOrder(
 			settings.PaymentType,
-			decimal.Parse(request.Amount),
+			decimal.Parse(data.Amount),
 			settings.FormId,
 			settings.BankCode,
 			new Uri($"{_options.CallbackBaseUrl}/deposit/callback"),
 			settings.ReturnUrl);
 
-		var depositResponse = await _phpGoClient.DepositAsync(
+		var depositResponse = await phpGoClient.DepositAsync(
 			settings.Merchant,
 			settings.Key,
 			order,
@@ -52,17 +48,15 @@ internal class DepositProcessor(
 				depositResponse.RedirectUrl,
 				depositResponse.QrCodeUrl));
 
-		await _paymentClient.ScheduleAsync(
+		await paymentClient.ScheduleAsync(
 			$"tgs.payment.{_options.PaymentCode.ToLower()}.deposit.schedule.reject",
 			settings.FormId,
 			DateTime.UtcNow.AddMinutes(11D),
 			cancellationToken).ConfigureAwait(false);
 
-		var msg = new DepositResponse
+		return new DepositResponse
 		{
 			Result = JsonSerializer.Serialize(applyInfo, PhpGoPayUtility.SerializerOptions)
 		};
-
-		return msg.ToByteArray();
 	}
 }

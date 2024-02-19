@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using Google.Protobuf;
 using Microsoft.Extensions.Options;
 using Tgs.Payment.Clients;
 using Tgs.Payment.PhpGoPay.Client;
@@ -11,30 +10,28 @@ namespace Tgs.Payment.PhpGoPay.MessageQueue;
 internal class WithdrawProcessor(
 	PhpGoClient phpGoClient,
 	IPaymentClient paymentClient,
-	IOptions<PhpGoOptions> optionsAccessor) : IMessageProcessor<ReadOnlyMemory<byte>, ReadOnlyMemory<byte>>
+	IOptions<PhpGoOptions> optionsAccessor)
+	: IMessageProcessor<WithdrawRequest, WithdrawResponse>
 {
-	private readonly PhpGoClient _phpGoClient = phpGoClient ?? throw new ArgumentNullException(nameof(phpGoClient));
-	private readonly IPaymentClient _paymentClient = paymentClient ?? throw new ArgumentNullException(nameof(paymentClient));
 	private readonly PhpGoOptions _options = optionsAccessor.Value;
 
-	public async ValueTask<ReadOnlyMemory<byte>> HandleAsync(
+	public async ValueTask<WithdrawResponse> HandleAsync(
 		string subject,
-		ReadOnlyMemory<byte> data,
+		WithdrawRequest data,
 		IEnumerable<MessageHeaderValue>? headerValues,
 		CancellationToken cancellationToken = default)
 	{
-		var request = WithdrawRequest.Parser.ParseFrom(data.Span);
-		var settings = JsonSerializer.Deserialize<PhpGoPayWithdrawSettings>(request.ApplyInfo, PhpGoPayUtility.SerializerOptions)!;
+		var settings = JsonSerializer.Deserialize<PhpGoPayWithdrawSettings>(data.ApplyInfo, PhpGoPayUtility.SerializerOptions)!;
 
 		var order = new PhpGoClientWithdrawOrder(
-			decimal.Parse(request.Amount),
+			decimal.Parse(data.Amount),
 			settings.FormId,
 			settings.BankCode,
 			settings.BankCardName,
 			settings.BankCardAccount,
 			new Uri($"{_options.CallbackBaseUrl}/withdraw/callback"));
 
-		await _phpGoClient.WithdrawAsync(
+		await phpGoClient.WithdrawAsync(
 			settings.Merchant,
 			settings.Key,
 			order,
@@ -44,16 +41,14 @@ internal class WithdrawProcessor(
 			settings,
 			new PhpGoPayWithdrawResponse());
 
-		await _paymentClient.SaveWithdrawFormThirdPartyOrderNoAsync(
+		await paymentClient.SaveWithdrawFormThirdPartyOrderNoAsync(
 			settings.FormId,
 			settings.FormId.ToString(),
-			cancellationToken);
+			cancellationToken).ConfigureAwait(false);
 
-		var msg = new WithdrawResponse
+		return new WithdrawResponse
 		{
 			Result = JsonSerializer.Serialize(applyInfo, PhpGoPayUtility.SerializerOptions)
 		};
-
-		return msg.ToByteArray();
 	}
 }
