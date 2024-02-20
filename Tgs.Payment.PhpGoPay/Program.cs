@@ -5,6 +5,7 @@ using OpenTelemetry.Instrumentation.AspNetCore;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using Tgs.MessageQueue.Nats.Serializers;
 using Tgs.Payment.PhpGoPay;
 using Tgs.Payment.PhpGoPay.MessageQueue;
 
@@ -46,28 +47,39 @@ builder.Services
 
 			http.BaseAddress = options.PaymentServiceBaseUrl;
 		}))
-	.AddKeyedSingleton("Nats",
-	(sp, _) => new NatsConnection(NatsOpts.Default with 
-	{ 
-		Url = builder.Configuration.GetConnectionString("Nats")!
-	}))
-	.AddMessageQueue()	
-	.AddNatsMessageQueue(natsConfig => natsConfig
-		.ConfigureResolveConnection(sp => sp.GetRequiredKeyedService<NatsConnection>("Nats"))
-		.AddProcessor(
-			ProcessorTypes.DepositProcessorType,
-			$"tgs.payment.{builder.Configuration.GetValue<string>("PhpGoPay:PaymentCode")!.ToLower()}.deposit",
-			$"tgs.payment.{builder.Configuration.GetValue<string>("PhpGoPay:PaymentCode")!.ToLower()}.deposit")
-		.AddProcessor(
-			ProcessorTypes.WithdrawProcessorType,
-			$"tgs.payment.{builder.Configuration.GetValue<string>("PhpGoPay:PaymentCode")!.ToLower()}.withdraw",
-			$"tgs.payment.{builder.Configuration.GetValue<string>("PhpGoPay:PaymentCode")!.ToLower()}.withdraw")
-		.AddHandler(
-			ProcessorTypes.DepositTimeoutCheckHandlerType,
-			$"tgs.payment.{builder.Configuration.GetValue<string>("PhpGoPay:PaymentCode")!.ToLower()}.deposit.schedule.reject",
-			$"tgs.payment.{builder.Configuration.GetValue<string>("PhpGoPay:PaymentCode")!.ToLower()}.deposit.schedule.reject"))
+	.AddKeyedSingleton(
+		"Nats",
+		(sp, _) => new NatsConnection(NatsOpts.Default with
+		{
+			Url = builder.Configuration.GetConnectionString("Nats")!,
+			SerializerRegistry = TgsNatsSerializerRegistration.Default
+		}))
+	.AddMessageQueue()
+	.AddNatsMessageQueue(natsConfig =>
+	{
+		var paymentCode = builder.Configuration.GetValue<string>("PhpGoPay:PaymentCode")!.ToLower();
+		_ = natsConfig
+			.ConfigureResolveConnection(sp => sp.GetRequiredKeyedService<NatsConnection>("Nats"))
+			.AddProcessor(
+				ProcessorTypes.DepositProcessorType,
+				$"tgs.payment.{paymentCode}.deposit",
+				$"tgs.payment.{paymentCode}.deposit")
+			.AddProcessor(
+				ProcessorTypes.WithdrawProcessorType,
+				$"tgs.payment.{paymentCode}.withdraw",
+				$"tgs.payment.{paymentCode}.withdraw")
+			.AddHandler(
+				ProcessorTypes.DepositTimeoutCheckHandlerType,
+				$"tgs.payment.{paymentCode}.deposit.schedule.reject",
+				$"tgs.payment.{paymentCode}.deposit.schedule.reject")
+			.AddProcessor(
+				ProcessorTypes.GetBalanceProcessorType,
+				$"tgs.payment.{paymentCode}.balance",
+				$"tgs.payment.{paymentCode}.balance");
+	})
 	.AddNatsGlobPatternExchange("*");
 
+var excludeExtensions = new[] { "html", "ico", "png", "jpg" };
 builder.Services
 	.AddProfileViewer()
 	.AddHttpLogging(logging =>
@@ -99,7 +111,7 @@ builder.Services
 			|| !httpContext.Request.Path.StartsWithSegments("/swagger")
 			&& !httpContext.Request.Path.StartsWithSegments("/healthz")
 			&& !httpContext.Request.Path.StartsWithSegments("/metrics")
-			&& !new[] { "html", "ico", "png", "jpg" }.Any(
+			&& !excludeExtensions.Any(
 				ext => httpContext.Request.Path.Value.EndsWith($".{ext}")));
 
 var app = builder.Build();

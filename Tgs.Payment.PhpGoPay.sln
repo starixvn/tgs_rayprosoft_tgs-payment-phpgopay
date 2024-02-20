@@ -17,11 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhpGoPay.Core.UnitTests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhpGoTest", "PhpGoTest\PhpGoTest.csproj", "{7504C434-EC76-48E6-A380-8244E766066D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhpGoPay.Client", "PhpGoPay.Client\PhpGoPay.Client.csproj", "{7DC299AB-ABE0-4479-9ADD-A6D38DD89508}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhpGoPay.Client", "PhpGoPay.Client\PhpGoPay.Client.csproj", "{7DC299AB-ABE0-4479-9ADD-A6D38DD89508}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhpGoPay.Client.UnitTests", "PhpGoPay.Client.UnitTests\PhpGoPay.Client.UnitTests.csproj", "{A845DA30-413E-4787-B75E-2D675775DFF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhpGoPay.Client.UnitTests", "PhpGoPay.Client.UnitTests\PhpGoPay.Client.UnitTests.csproj", "{A845DA30-413E-4787-B75E-2D675775DFF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tgs.Payment.PhpGoPay.IntegrationTests", "Tgs.Payment.PhpGoPay.IntegrationTests\Tgs.Payment.PhpGoPay.IntegrationTests.csproj", "{6A86956C-6D23-49E8-B511-CC795C10B92D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.Payment.PhpGoPay.IntegrationTests", "Tgs.Payment.PhpGoPay.IntegrationTests\Tgs.Payment.PhpGoPay.IntegrationTests.csproj", "{6A86956C-6D23-49E8-B511-CC795C10B92D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

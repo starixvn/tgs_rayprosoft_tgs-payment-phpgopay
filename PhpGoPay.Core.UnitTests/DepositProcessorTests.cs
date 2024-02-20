@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using Google.Protobuf;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using NSubstitute;
@@ -70,10 +69,9 @@ public class DepositProcessorTests
 		// Act
 		var actual = await sut.HandleAsync(
 			"tgs.payment.phpgopay.deposit",
-			request.ToByteArray(),
+			request,
 			null);
-		var response = DepositResponse.Parser.ParseFrom(actual.Span);
-		var applyInfo = JsonSerializer.Deserialize<PhpGoPayDepositApplyInfo>(response.Result, PhpGoPayUtility.SerializerOptions);
+		var applyInfo = JsonSerializer.Deserialize<PhpGoPayDepositApplyInfo>(actual.Result, PhpGoPayUtility.SerializerOptions);
 
 		// Assert
 		_ = fakePaymentClient.Received(1)

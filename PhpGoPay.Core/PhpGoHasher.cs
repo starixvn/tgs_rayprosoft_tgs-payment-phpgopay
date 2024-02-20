@@ -5,14 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Tgs.Payment.PhpGoPay;
 
-public class PhpGoHasher
+public class PhpGoHasher(ILogger<PhpGoHasher> logger)
 {
-	private readonly ILogger<PhpGoHasher> _logger;
-
-	public PhpGoHasher(ILogger<PhpGoHasher> logger)
-	{
-		_logger = logger ?? throw new ArgumentNullException(nameof(logger));
-	}
+	private readonly ILogger<PhpGoHasher> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
 	public string ComputeHash(string key, IEnumerable<KeyValuePair<string, string?>> dict)
 	{

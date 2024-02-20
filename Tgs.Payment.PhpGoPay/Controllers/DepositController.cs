@@ -10,14 +10,9 @@ namespace Tgs.Payment.PhpGoPay.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class DepositController : ControllerBase
+public class DepositController(ILogger<DepositController> logger) : ControllerBase
 {
-	private readonly ILogger<DepositController> _logger;
-
-	public DepositController(ILogger<DepositController> logger)
-	{
-		_logger = logger ?? throw new ArgumentNullException(nameof(logger));
-	}
+	private readonly ILogger<DepositController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
 	[HttpPost("callback", Name = "NotifyDeposit")]
 	[Consumes("multipart/form-data")]

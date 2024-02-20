@@ -9,14 +9,9 @@ using Xunit.Abstractions;
 
 namespace Tgs.Payment.PhpGoPay.IntegrationTests;
 
-public class WithdrawTests
+public class WithdrawTests(ITestOutputHelper testOutputHelper)
 {
-	private readonly ITestOutputHelper _testOutputHelper;
-
-	public WithdrawTests(ITestOutputHelper testOutputHelper)
-	{
-		_testOutputHelper = testOutputHelper ?? throw new ArgumentNullException(nameof(testOutputHelper));
-	}
+	private readonly ITestOutputHelper _testOutputHelper = testOutputHelper ?? throw new ArgumentNullException(nameof(testOutputHelper));
 
 	[Fact]
 	public async Task 代付回呼()

@@ -6,7 +6,7 @@ public class PhpGoPaymentType
 	public static readonly PhpGoPaymentType Gateway = new("2");
 	public static readonly PhpGoPaymentType Direct = new("3");
 
-	private static readonly IReadOnlyDictionary<string, PhpGoPaymentType> _PaymentTypes = new Dictionary<string, PhpGoPaymentType>
+	private static readonly Dictionary<string, PhpGoPaymentType> _PaymentTypes = new()
 	{
 		["1"] = QrCode,
 		["2"] = Gateway,

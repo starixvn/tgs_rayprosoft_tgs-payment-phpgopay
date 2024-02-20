@@ -89,9 +89,9 @@ public class DepositTimeoutCheckHandlerTests
 
 		// Act
 		await sut.HandleAsync(
-			   subject: $"tgs.payment.{options.PaymentCode.ToLower()}.deposit.schedule.reject",
-			   request.ToByteArray(),
-			   null);
+			subject: $"tgs.payment.{options.PaymentCode.ToLower()}.deposit.schedule.reject",
+			request,
+			null);
 
 		// Assert
 		_ = fakePaymentClient.Received(1)
@@ -175,7 +175,7 @@ public class DepositTimeoutCheckHandlerTests
 		// Act
 		await sut.HandleAsync(
 			subject: $"tgs.payment.{options.PaymentCode}.deposit.schedule.reject",
-			request.ToByteArray(),
+			request,
 			null);
 
 		// Assert

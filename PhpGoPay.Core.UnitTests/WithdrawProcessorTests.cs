@@ -66,10 +66,9 @@ public class WithdrawProcessorTests
 		// Act
 		var actual = await sut.HandleAsync(
 			"tgs.payment.phpgopay.withdraw",
-			request.ToByteArray(),
+			request,
 			null);
-		var response = WithdrawResponse.Parser.ParseFrom(actual.Span);
-		var applyInfo = JsonSerializer.Deserialize<PhpGoPayWithdrawApplyInfo>(response.Result, PhpGoPayUtility.SerializerOptions);
+		var applyInfo = JsonSerializer.Deserialize<PhpGoPayWithdrawApplyInfo>(actual.Result, PhpGoPayUtility.SerializerOptions);
 
 		// Assert
 		_ = fakePaymentClient.Received(1)

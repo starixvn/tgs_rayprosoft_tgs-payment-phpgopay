@@ -13,41 +13,40 @@ internal class DepositTimeoutCheckHandler(
 	PhpGoClient phpGoClient,
 	IPaymentClient paymentClient,
 	IOptions<PhpGoOptions> optionsAccessor,
-	ILogger<DepositTimeoutCheckHandler> logger) : IMessageHandler<ReadOnlyMemory<byte>>
+	ILogger<DepositTimeoutCheckHandler> logger)
+	: IMessageHandler<ScheduleRequest>
 {
-	private readonly IPaymentServiceClient _paymentServiceClient = paymentServiceClient ?? throw new ArgumentNullException(nameof(paymentServiceClient));
-	private readonly PhpGoClient _phpGoClient = phpGoClient ?? throw new ArgumentNullException(nameof(phpGoClient));
-	private readonly IPaymentClient _paymentClient = paymentClient ?? throw new ArgumentNullException(nameof(paymentClient));
-	private readonly ILogger<DepositTimeoutCheckHandler> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 	private readonly PhpGoOptions _options = optionsAccessor.Value;
 
-	public async ValueTask HandleAsync(string subject, ReadOnlyMemory<byte> data, IEnumerable<MessageHeaderValue>? headerValues, CancellationToken cancellationToken = default)
+	public async ValueTask HandleAsync(
+		string subject,
+		ScheduleRequest data,
+		IEnumerable<MessageHeaderValue>? headerValues,
+		CancellationToken cancellationToken = default)
 	{
-		var request = ScheduleRequest.Parser.ParseFrom(data.Span);
-
-		_logger.LogInformation(
+		logger.LogInformation(
 			"Deposit Schedule Handler Receive request Form Id:{request.FormId.ToGuid()}, "
 				+ "Schedule Time:{request.ScheduleTime.ToDateTime():yyyy/MM/dd HH:mm:ss}",
-			request.FormId.ToGuid(),
-			request.ScheduleTime.ToDateTime());
+			data.FormId.ToGuid(),
+			data.ScheduleTime.ToDateTime());
 
-		var formId = request.FormId.ToGuid();
+		var formId = data.FormId.ToGuid();
 
 		try
 		{
-			var depositForm = await _paymentServiceClient
+			var depositForm = await paymentServiceClient
 				.GetDepositFormAsync(formId, cancellationToken)
 				.ConfigureAwait(false);
 
 			if (depositForm is null)
 			{
-				_logger.LogWarning("Deposit Form {request.FormId.ToGuid()} not found.", request.FormId.ToGuid());
+				logger.LogWarning("Deposit Form {request.FormId.ToGuid()} not found.", data.FormId.ToGuid());
 				return;
 			}
 
 			var brandId = depositForm.BrandId;
 
-			_logger.LogInformation(
+			logger.LogInformation(
 				"GetDepositFormAsync Form Id:{depositForm.Id}, Brand Id:{brandId}, Status:{depositForm.Status}",
 				depositForm.Id,
 				brandId,
@@ -58,7 +57,7 @@ internal class DepositTimeoutCheckHandler(
 
 			var applyInfo = JsonSerializer.Deserialize<PhpGoPayDepositApplyInfo>(depositForm.ApplyInfo!, PhpGoPayUtility.SerializerOptions)!;
 
-			var result = await _phpGoClient.QueryDepositOrWithdrawFormStatusAsync(
+			var result = await phpGoClient.QueryDepositOrWithdrawFormStatusAsync(
 				applyInfo.Settings.Merchant,
 				applyInfo.Settings.Key,
 				formId,
@@ -72,13 +71,13 @@ internal class DepositTimeoutCheckHandler(
 				{
 					await fsm.FireAsync(PaymentTrigger.Reject).ConfigureAwait(false);
 
-					await _paymentClient
+					await paymentClient
 						.RejectDepositAsync(formId, brandId, cancellationToken)
 						.ConfigureAwait(false);
 				}
 			}
 			else if (result?.Status is not 5)
-				await _paymentClient.ScheduleAsync(
+				await paymentClient.ScheduleAsync(
 					$"tgs.payment.{_options.PaymentCode.ToLower()}.deposit.schedule.reject",
 					formId,
 					DateTime.UtcNow.AddMinutes(10D),
@@ -86,9 +85,9 @@ internal class DepositTimeoutCheckHandler(
 		}
 		catch (Exception ex)
 		{
-			_logger.LogError(ex, "Process deposit timeout error!");
+			logger.LogError(ex, "Process deposit timeout error!");
 
-			await _paymentClient.ScheduleAsync(
+			await paymentClient.ScheduleAsync(
 				$"tgs.payment.{_options.PaymentCode.ToLower()}.deposit.schedule.reject",
 				formId,
 				DateTime.UtcNow.AddMinutes(10D),
