@@ -13,7 +13,6 @@ public class GetBalanceProcessorTests
 	public async Task GetBalanceProcessor_取得商戶餘額()
 	{
 		// Arrange
-		var fakePaymentServiceClient = Substitute.For<IPaymentServiceClient>();
 		var mockHttp = new MockHttpMessageHandler();
 
 		var httpClient = mockHttp.ToHttpClient();
@@ -24,25 +23,19 @@ public class GetBalanceProcessorTests
 			new PhpGoHasher(NullLogger<PhpGoHasher>.Instance),
 			NullLogger<PhpGoClient>.Instance);
 
-		var sut = new GetBalanceProcessor(fakePaymentServiceClient, fakePhpGoClient);
+		var sut = new GetBalanceProcessor(fakePhpGoClient);
 
 		var brandPaymentId = Guid.NewGuid();
 
 		var request = new PaymentBalanceRequest
 		{
-			BrandPaymentId = brandPaymentId
+			BrandPaymentSettings = """
+				{
+					"merchant": "ATB",
+					"key": "006aecc37beff9eb59a6cb03f2cf699c"
+				}
+				"""
 		};
-
-		_ = fakePaymentServiceClient.GetBrandPaymentByIdAsync(Arg.Is(brandPaymentId))
-			.Returns(new BrandPaymentInfo
-			{
-				ExtendedData = """
-					{
-						"merchant": "ATB",
-						"key": "006aecc37beff9eb59a6cb03f2cf699c"
-					}
-					"""
-			});
 
 		_ = mockHttp.Expect(HttpMethod.Post, "https://test.galaxy.com/api/me")
 			.With(req => req.Content?.Headers.ContentType?.MediaType == "application/json")

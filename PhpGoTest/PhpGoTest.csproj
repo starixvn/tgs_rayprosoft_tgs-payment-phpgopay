@@ -13,7 +13,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="PhoenixToolkits.MessageQueue.Nats" Version="2.1.2" />
     <PackageReference Include="Tgs.MessageQueue.Compatible" Version="0.0.2" />
-    <PackageReference Include="Tgs.Payment.Client" Version="0.6.1" />
+    <PackageReference Include="Tgs.Payment.Client" Version="0.6.4" />
     <PackageReference Include="Tgs.WebApi.Toolkits" Version="0.4.0" />
   </ItemGroup>
 
