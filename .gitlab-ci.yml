@@ -214,6 +214,45 @@ deploy-dev:
           ]
         }
       EOF
+    - |
+      cat << EOF | name_template="tgs-lpay" deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+        {
+          "podServiceName": "Payment-LPay",
+          "podEnv": [
+            {
+              "name": "ConnectionStrings__Nats",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "nats"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentApiUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-lpay-paymentApiUrl"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__CallbackBaseUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-lpay-callback"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentCode",
+              "value": "LPay"
+            }
+          ]
+        }
+      EOF
   when: on_success
 
 deploy-staging:
@@ -387,7 +426,46 @@ deploy-staging:
             }
           ]
         }
-      EOF    
+      EOF
+    - |
+      cat << EOF | name_template="tgs-lpay" deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+        {
+          "podServiceName": "Payment-LPay",
+          "podEnv": [
+            {
+              "name": "ConnectionStrings__Nats",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "nats"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentApiUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-lpay-paymentApiUrl"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__CallbackBaseUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-lpay-callback"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentCode",
+              "value": "LPay"
+            }
+          ]
+        }
+      EOF
   when: manual
 
 deploy-prod:
@@ -561,5 +639,44 @@ deploy-prod:
             }
           ]
         }
-      EOF  
+      EOF
+    - |
+      cat << EOF | name_template="tgs-lpay" deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+        {
+          "podServiceName": "Payment-LPay",
+          "podEnv": [
+            {
+              "name": "ConnectionStrings__Nats",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "nats"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentApiUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-lpay-paymentApiUrl"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__CallbackBaseUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-lpay-callback"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentCode",
+              "value": "LPay"
+            }
+          ]
+        }
+      EOF
   when: manual
