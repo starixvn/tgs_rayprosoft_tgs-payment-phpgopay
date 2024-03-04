@@ -253,6 +253,45 @@ deploy-dev:
           ]
         }
       EOF
+    - |
+      cat << EOF | name_template="tgs-sunnypay" deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+        {
+          "podServiceName": "Payment-SunnyPay",
+          "podEnv": [
+            {
+              "name": "ConnectionStrings__Nats",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "nats"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentApiUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-sunnypay-paymentApiUrl"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__CallbackBaseUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-sunnypay-callback"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentCode",
+              "value": "SunnyPay"
+            }
+          ]
+        }
+      EOF  
   when: on_success
 
 deploy-staging:
@@ -462,6 +501,45 @@ deploy-staging:
             {
               "name": "PhpGoPay__PaymentCode",
               "value": "LPay"
+            }
+          ]
+        }
+      EOF
+    - |
+      cat << EOF | name_template="tgs-sunnypay" deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+        {
+          "podServiceName": "Payment-SunnyPay",
+          "podEnv": [
+            {
+              "name": "ConnectionStrings__Nats",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "nats"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentApiUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-sunnypay-paymentApiUrl"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__CallbackBaseUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-sunnypay-callback"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentCode",
+              "value": "SunnyPay"
             }
           ]
         }
@@ -679,4 +757,43 @@ deploy-prod:
           ]
         }
       EOF
+    - |
+      cat << EOF | name_template="tgs-sunnypay" deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+        {
+          "podServiceName": "Payment-SunnyPay",
+          "podEnv": [
+            {
+              "name": "ConnectionStrings__Nats",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "nats"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentApiUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-sunnypay-paymentApiUrl"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__CallbackBaseUrl",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "tgs-connections",
+                  "key": "payment-sunnypay-callback"
+                }
+              }
+            },
+            {
+              "name": "PhpGoPay__PaymentCode",
+              "value": "SunnyPay"
+            }
+          ]
+        }
+      EOF  
   when: manual
