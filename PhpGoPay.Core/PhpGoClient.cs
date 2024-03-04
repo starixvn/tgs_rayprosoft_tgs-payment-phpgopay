@@ -106,13 +106,13 @@ internal class PhpGoClient(
 			.Do(node =>
 			{
 				if (node is null)
-					throw new ApiFailException("Deposit response can't read.");
+					throw new ApiFailException("Withdraw response can't read.");
 
 				if (logger.IsEnabled(LogLevel.Information))
 				{
 					var bodyJson = JsonSerializer.Serialize(node, _jsonSerializerOptions);
 
-					logger.LogInformation("Deposit Body: {bodyJson}", bodyJson);
+					logger.LogInformation("Withdraw Body: {bodyJson}", bodyJson);
 				}
 
 				if (node["status"]?.ToString() != "1")
