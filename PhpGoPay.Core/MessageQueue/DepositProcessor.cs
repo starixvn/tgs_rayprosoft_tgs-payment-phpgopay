@@ -51,7 +51,7 @@ internal class DepositProcessor(
 		await paymentClient.ScheduleAsync(
 			$"tgs.payment.{_options.PaymentCode.ToLower()}.deposit.schedule.reject",
 			settings.FormId,
-			DateTime.UtcNow.AddMinutes(11D),
+			DateTime.UtcNow.AddHours(24D),
 			cancellationToken).ConfigureAwait(false);
 
 		return new DepositResponse
